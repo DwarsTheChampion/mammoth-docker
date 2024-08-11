@@ -10,8 +10,20 @@ services:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         healthcheck:
             test: sh -c "healthcheck.sh --connect --innodb_initialized"
-            interval: 1s
+            interval: 2s
             retries: 10
+
+    migrations:
+        container_name: vanilla-migrations
+        build:
+            context: .
+            dockerfile: docker/migrations.Dockerfile
+            args:
+                DATABASE_URL: ${DATABASE_URL}
+        command: prisma migrate deploy
+        depends_on:
+            mariadb:
+                condition: service_healthy
 
 volumes:
     vanilla-mariadb-data:
