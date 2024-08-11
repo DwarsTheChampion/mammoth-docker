@@ -30,8 +30,8 @@ services:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         healthcheck:
             test: sh -c "healthcheck.sh --connect --innodb_initialized"
-            interval: 2s
-            retries: 10
+            interval: 3s
+            retries: 30
 
     migrations:
         container_name: vanilla-migrations
