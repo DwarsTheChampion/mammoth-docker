@@ -1,0 +1,17 @@
+services:
+    mariadb:
+        container_name: vanilla-mariadb
+        image: mariadb:11.4
+        volumes:
+            - vanilla-mariadb-data:/var/lib/mysql
+        environment:
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        healthcheck:
+            test: sh -c "healthcheck.sh --connect --innodb_initialized"
+            interval: 1s
+            retries: 10
+
+volumes:
+    vanilla-mariadb-data:
