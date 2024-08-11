@@ -3,7 +3,7 @@ FROM node:20-alpine
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
 
-WORKDIR /app/api
+WORKDIR /app
 
 COPY vanilla-api/package*.json .
 RUN npm install
