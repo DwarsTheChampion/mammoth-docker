@@ -1,0 +1,6 @@
+[submodule "vanilla"]
+	path = vanilla
+	url = https://github.com/wizguin/vanilla
+[submodule "vanilla-api"]
+	path = vanilla-api
+	url = https://github.com/wizguin/vanilla-api
