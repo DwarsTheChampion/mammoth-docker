@@ -57,6 +57,18 @@ services:
             mariadb:
                 condition: service_healthy
 
+    websockify:
+        container_name: vanilla-websockify
+        build:
+            context: .
+            dockerfile: docker/websockify.Dockerfile
+        volumes:
+            - ./scripts/websockify.sh:/app/websockify.sh
+        command: sh -c "./websockify.sh"
+        ports:
+            - "8181:8181"
+            - "8182:8182"
+
     api:
         <<: *api
         container_name: vanilla-api
