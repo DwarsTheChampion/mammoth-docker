@@ -1,3 +1,13 @@
+x-vanilla: &vanilla
+    build:
+        context: .
+        dockerfile: docker/vanilla.Dockerfile
+        args:
+            DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+        migrations:
+            condition: service_completed_successfully
+
 services:
     mariadb:
         container_name: vanilla-mariadb
@@ -24,6 +34,13 @@ services:
         depends_on:
             mariadb:
                 condition: service_healthy
+
+    blizzard:
+        <<: *vanilla
+        container_name: vanilla-blizzard
+        command: npm run start -- -n Blizzard -p 6114
+        ports:
+            - "6114:6114"
 
 volumes:
     vanilla-mariadb-data:
