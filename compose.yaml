@@ -19,6 +19,17 @@ x-api: &api
             condition: service_completed_successfully
 
 services:
+    nginx:
+        container_name: vanilla-nginx
+        image: nginx:1.27-alpine
+        volumes:
+            - ./assets:/usr/share/nginx/html
+            - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8080:80"
+        depends_on:
+            - api
+
     mariadb:
         container_name: vanilla-mariadb
         image: mariadb:11.4
