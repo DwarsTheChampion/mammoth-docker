@@ -73,8 +73,6 @@ services:
         <<: *api
         container_name: vanilla-api
         command: npm run start:api
-        ports:
-            - "7000:7000"
 
     join:
         <<: *api
