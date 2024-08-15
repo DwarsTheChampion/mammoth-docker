@@ -1,5 +1,5 @@
 server {
-    listen 80;
+    listen ${NGINX_PORT};
 
     root /usr/share/nginx/html;
     index index.html;
@@ -7,8 +7,8 @@ server {
     error_page 404 =302 $scheme://$http_host;
     error_page 405 =200 $uri;
 
-    location /php {
-        proxy_pass http://api:${API_PORT}/php;
+    location /php/ {
+        proxy_pass http://api:${API_PORT}/php/;
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
