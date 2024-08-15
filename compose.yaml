@@ -2,9 +2,7 @@ x-vanilla: &vanilla
     build:
         context: .
         dockerfile: docker/vanilla.Dockerfile
-    environment:
-        DATABASE_URL: ${DATABASE_URL}
-        NODE_ENV: ${NODE_ENV}
+    env_file: .env
     depends_on:
         migrations:
             condition: service_completed_successfully
@@ -13,9 +11,7 @@ x-api: &api
     build:
         context: .
         dockerfile: docker/api.Dockerfile
-    environment:
-        DATABASE_URL: ${DATABASE_URL}
-        NODE_ENV: ${NODE_ENV}
+    env_file: .env
     depends_on:
         migrations:
             condition: service_completed_successfully
@@ -26,9 +22,11 @@ services:
         image: nginx:1.27-alpine
         volumes:
             - ./assets:/usr/share/nginx/html
-            - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./config/nginx.conf.template:/etc/nginx/templates/default.conf.template
+        environment:
+            API_PORT: ${API_PORT}
         ports:
-            - "8080:80"
+            - "${NGINX_PORT}:80"
         depends_on:
             - api
 
@@ -66,10 +64,11 @@ services:
             dockerfile: docker/websockify.Dockerfile
         volumes:
             - ./scripts/websockify.sh:/app/websockify.sh
+        env_file: .env
         command: sh -c "./websockify.sh"
         ports:
-            - "8181:8181"
-            - "8182:8182"
+            - "${WS_JOIN_PORT}:${WS_JOIN_PORT}"
+            - "${WS_BLIZZARD_PORT}:${WS_BLIZZARD_PORT}"
 
     api:
         <<: *api
@@ -81,14 +80,14 @@ services:
         container_name: vanilla-join
         command: node dist/join/Join.js
         ports:
-            - "6113:6113"
+            - "${JOIN_PORT}:${JOIN_PORT}"
 
     blizzard:
         <<: *vanilla
         container_name: vanilla-blizzard
-        command: npm run start -- -n Blizzard -p 6114
+        command: npm run start -- -n Blizzard -p ${BLIZZARD_PORT}
         ports:
-            - "6114:6114"
+            - "${BLIZZARD_PORT}:${BLIZZARD_PORT}"
 
 volumes:
     vanilla-mariadb-data:

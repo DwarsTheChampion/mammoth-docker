@@ -10,7 +10,7 @@ server {
     error_page 405 =200 $uri;
 
     location /php {
-        proxy_pass http://api:7000/php;
+        proxy_pass http://api:${API_PORT}/php;
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
