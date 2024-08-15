@@ -4,8 +4,6 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
-    proxy_intercept_errors on;
-
     error_page 404 =302 $scheme://$http_host;
     error_page 405 =200 $uri;
 
