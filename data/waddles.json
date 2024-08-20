@@ -1,0 +1,26 @@
+[
+    {
+        "id": 100,
+        "seats": 4,
+        "roomId": 230,
+        "gameId": 999
+    },
+    {
+        "id": 101,
+        "seats": 3,
+        "roomId": 230,
+        "gameId": 999
+    },
+    {
+        "id": 102,
+        "seats": 2,
+        "roomId": 230,
+        "gameId": 999
+    },
+    {
+        "id": 103,
+        "seats": 2,
+        "roomId": 230,
+        "gameId": 999
+    }
+]

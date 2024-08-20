@@ -2,6 +2,8 @@ x-vanilla: &vanilla
     build:
         context: .
         dockerfile: docker/vanilla.Dockerfile
+    volumes:
+        - ./data:/app/data
     env_file: .env
     depends_on:
         migrations:
