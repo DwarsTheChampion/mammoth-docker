@@ -1,4 +1,4 @@
-FROM python:3.13-rc-alpine
+FROM alpine:3.20
 
 RUN apk add --no-cache websockify
 
