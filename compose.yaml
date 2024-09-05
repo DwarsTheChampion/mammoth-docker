@@ -48,6 +48,11 @@ services:
             interval: 3s
             retries: 30
 
+    redis:
+        container_name: vanilla-redis
+        image: redis:7.4-alpine
+        command: redis-server --requirepass ${REDIS_PASSWORD}
+
     migrations:
         container_name: vanilla-migrations
         build:
@@ -88,7 +93,7 @@ services:
     blizzard:
         <<: *vanilla
         container_name: vanilla-blizzard
-        command: npm run start -- -n Blizzard -p ${BLIZZARD_PORT}
+        command: npm run start -- -i 100 -n Blizzard -p ${BLIZZARD_PORT}
         ports:
             - "${BLIZZARD_PORT}:${BLIZZARD_PORT}"
 
