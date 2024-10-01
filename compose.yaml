@@ -1,22 +1,21 @@
 x-vanilla: &vanilla
-    build:
+    build: &vanilla_build
         context: .
         dockerfile: docker/vanilla.Dockerfile
-    volumes:
-        - ./data:/app/data
-    env_file: .env
+    env_file: '.env'
+    command: npm run start
     depends_on:
         migrations:
             condition: service_completed_successfully
 
-x-api: &api
+x-world: &world
+    <<: *vanilla
     build:
-        context: .
-        dockerfile: docker/api.Dockerfile
-    env_file: .env
-    depends_on:
-        migrations:
-            condition: service_completed_successfully
+        <<: *vanilla_build
+        args:
+            PACKAGE: 'world'
+    volumes:
+        - ./data:/app/packages/world/data
 
 services:
     nginx:
@@ -79,19 +78,35 @@ services:
             - "${WS_BLIZZARD_PORT}:${WS_BLIZZARD_PORT}"
 
     api:
-        <<: *api
+        <<: *vanilla
         container_name: vanilla-api
-        command: npm run start:api
+        build:
+            <<: *vanilla_build
+            args:
+                PACKAGE: 'api'
 
     join:
-        <<: *api
+        <<: *vanilla
         container_name: vanilla-join
-        command: node dist/join/Join.js
+        build:
+            <<: *vanilla_build
+            args:
+                PACKAGE: 'join'
         ports:
             - "${JOIN_PORT}:${JOIN_PORT}"
 
-    blizzard:
+    policy:
         <<: *vanilla
+        container_name: vanilla-policy
+        build:
+            <<: *vanilla_build
+            args:
+                PACKAGE: 'policy'
+        ports:
+            - "${POLICY_PORT}:${POLICY_PORT}"
+
+    blizzard:
+        <<: *world
         container_name: vanilla-blizzard
         command: npm run start -- -i 100 -n Blizzard -p ${BLIZZARD_PORT}
         ports:
