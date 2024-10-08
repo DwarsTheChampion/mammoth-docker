@@ -15,7 +15,7 @@ x-world: &world
         args:
             PACKAGE: 'world'
     volumes:
-        - ./data:/app/packages/world/data
+        - ./data:/app/data
 
 services:
     nginx:
