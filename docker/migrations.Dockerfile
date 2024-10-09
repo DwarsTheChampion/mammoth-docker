@@ -4,4 +4,4 @@ WORKDIR /app
 
 RUN npm install -g prisma
 
-COPY vanilla/prisma prisma
+COPY mammoth/prisma prisma
