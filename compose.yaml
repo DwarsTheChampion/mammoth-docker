@@ -15,14 +15,14 @@ x-world: &world
         args:
             PACKAGE: 'world'
     volumes:
-        - ./data:/app/data
+        - ${DATA_VOLUME_DIR}:/app/data
 
 services:
     nginx:
         container_name: vanilla-nginx
         image: nginx:1.27-alpine
         volumes:
-            - ./assets:/usr/share/nginx/html
+            - ${ASSETS_VOLUME_DIR}:/usr/share/nginx/html
             - ./config/nginx.conf.template:/etc/nginx/templates/default.conf.template
         environment:
             API_PORT: ${API_PORT}
